@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Asociación SOCIO ACTIVO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #modalEstatuto {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalContent {
+            background-color: #fff;
+            max-width: 1000px;
+            max-height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        #terms-progress-bar {
+            width: 0;
+            height: 5px;
+            background-color: #4ade80;
+        }
+
+        #form-progress-bar {
+            width: 0;
+            height: 5px;
+            background-color: #4ade80;
+        }
+
+        #continue-btn:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Banner con la imagen -->
+    <div class="relative w-full">
+        <img src="wsp.jpg" alt="Banner del formulario de Alta CAEM" class="relative w-full h-48 object-cover">
+    </div>
+
+    <div class="max-w-6xl mx-auto my-10 p-8 bg-white rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6 text-center">Formulario de Asociación <br> SOCIOS ACTIVOS</h1>
+        <p class="mb-6 text-center">Para iniciar el proceso de asociación, completa el formulario. Te informaremos por email la categoría correspondiente.</p>
+
+        <!-- Temporizador y mensaje -->
+        <div class="mb-4 text-center">
+            <p class="text-gray-700">Estimado socio, este formulario no va a demorar más de 10 minutos en completarlo.</p>
+            <p>Tiempo transcurrido: <span id="timer">00:00</span></p>
+        </div>
+
+        <!-- Barra de progreso de 4 pasos -->
+        <div class="mb-6">
+            <div class="flex justify-between mb-2 text-sm font-semibold text-gray-700">
+                <span>Paso 1</span>
+                <span>Paso 2</span>
+                <span>Paso 3</span>
+                <span>Paso 4</span>
+            </div>
+            <div class="w-full bg-gray-300 rounded-full">
+                <div id="form-progress-bar" class="rounded-full bg-green-500" style="width: 0%; height: 5px;"></div>
+
+            </div>
+        </div>
+
+        <form id="formulario" class="space-y-8" enctype="multipart/form-data">
+            <!-- Paso 1: Datos Personales -->
+            <fieldset id="paso1" class="form-step">
+                <legend class="text-xl font-semibold mb-4">1. Datos Personales</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="nombreSolicitante" class="block mb-2">Nombre del solicitante *</label>
+                        <input type="text" id="nombreSolicitante" name="nombreSolicitante" class="w-full border border-gray-300 rounded p-2" placeholder="Nombre" required>
+                    </div>
+                    <div>
+                        <label for="apellidoSolicitante" class="block mb-2">Apellido del solicitante *</label>
+                        <input type="text" id="apellidoSolicitante" name="apellidoSolicitante" class="w-full border border-gray-300 rounded p-2" placeholder="Apellido" required>
+                    </div>
+                    <div>
+                        <label for="dni" class="block mb-2">DNI (solo números) *</label>
+                        <input type="number" id="dni" name="dni" class="w-full border border-gray-300 rounded p-2" placeholder="DNI" required>
+                    </div>
+                    <div>
+                        <label for="emailSolicitante" class="block mb-2">E-mail del solicitante *</label>
+                        <input type="email" id="emailSolicitante" name="emailSolicitante" class="w-full border border-gray-300 rounded p-2" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <label for="nombreFantasia" class="block mb-2">Nombre de fantasía de la empresa *</label>
+                        <input type="text" id="nombreFantasia" name="nombreFantasia" class="w-full border border-gray-300 rounded p-2" placeholder="Nombre de fantasía" required>
+                    </div>
+                    <div>
+                        <label for="razonSocial" class="block mb-2">Razón social para facturación *</label>
+                        <input type="text" id="razonSocial" name="razonSocial" class="w-full border border-gray-300 rounded p-2" placeholder="Razón social" required>
+                    </div>
+                    <div>
+                        <label for="cuit" class="block mb-2">CUIT *</label>
+                        <input type="text" id="cuit" name="cuit" class="w-full border border-gray-300 rounded p-2" placeholder="CUIT" required>
+                    </div>
+                    <div>
+                        <label for="rubroActividad" class="block mb-2">Rubro o actividad principal *</label>
+                        <select id="rubroActividad" name="rubroActividad" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>Exploración</option>
+                            <option>Explotación</option>
+                            <option>Producción</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="facturacion" class="block mb-2">Facturación estimada último año *</label>
+                        <select id="facturacion" name="facturacion" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>Mayor a $1.400 MM</option>
+                            <option>Entre $800 MM y $1.400 MM</option>
+                            <option>Menor a $800 MM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="empleados" class="block mb-2">Empleados en relación de dependencia *</label>
+                        <select id="empleados" name="empleados" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>Menos de 50</option>
+                            <option>Entre 50 y 200</option>
+                            <option>Más de 200</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="direccion" class="block mb-2">Dirección *</label>
+                        <input type="text" id="direccion" name="direccion" class="w-full border border-gray-300 rounded p-2" placeholder="Dirección" required>
+                    </div>
+                    <div>
+                        <label for="codigoPostal" class="block mb-2">Código postal *</label>
+                        <input type="text" id="codigoPostal" name="codigoPostal" class="w-full border border-gray-300 rounded p-2" placeholder="Código postal" required>
+                    </div>
+                    <div>
+                        <label for="localidad" class="block mb-2">Localidad *</label>
+                        <input type="text" id="localidad" name="localidad" class="w-full border border-gray-300 rounded p-2" placeholder="Localidad" required>
+                    </div>
+                    <div>
+                        <label for="provincia" class="block mb-2">Provincia *</label>
+                        <select id="provincia" name="provincia" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>C.A.B.A.</option>
+                            <option>Buenos Aires</option>
+                            <option>Córdoba</option>
+                            <option>Santa Fe</option>
+                            <option>La Pampa</option>
+                            <option>San Luis</option>
+                            <option>Mendoza</option>
+                            <option>San Juan</option>
+                            <option>La Rioja</option>
+                            <option>Catamarca</option>
+                            <option>Salta</option>
+                            <option>Jujuy</option>
+                            <option>Tierra del Fuego</option>
+                            <option>Santa Cruz</option>
+                            <option>Río Negro</option>
+                            <option>Neuquén</option>
+                            <option>Entre Ríos</option>
+                            <option>Corrientes</option>
+                            <option>Misiones</option>
+                            <option>Chaco</option>
+                            <option>Formosa</option>
+                            <option>Santiago del Estero</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="telefonoSolicitante" class="block mb-2">Número de teléfono *</label>
+                        <input type="tel" id="telefonoSolicitante" name="telefonoSolicitante" class="w-full border border-gray-300 rounded p-2" placeholder="Número de teléfono" required>
+                    </div>
+                    <div>
+                        <label for="condicionIVA" class="block mb-2">Condición frente al IVA *</label>
+                        <select id="condicionIVA" name="condicionIVA" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>Responsable Inscripto</option>
+                            <option>Exento</option>
+                            <option>Monotributo</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="certificadoExencion" class="block mb-2">Adjuntar certificado de Exención Ganancias RG830 en caso de corresponder</label>
+                        <input type="file" id="certificadoExencion" name="certificadoExencion" class="w-full border border-gray-300 rounded p-2" accept=".pdf,.jpg,.png">
+                    </div>
+                    <div>
+                        <label for="instrumentopersoneria" class="block mb-2">Adjuntar instrumento que acredite personería (Poder o última designación de autoridades) *</label>
+                        <input type="file" id="instrumentopersoneria" name="instrumentopersoneria" class="w-full border border-gray-300 rounded p-2" accept=".pdf,.jpg,.png" required>
+                    </div>
+                    <div>
+                        <label for="ultimoBalance" class="block mb-2">Último Balance General *</label>
+                        <input type="text" id="ultimoBalance" name="ultimoBalance" class="w-full border border-gray-300 rounded p-2" placeholder="Último Balance" required>
+                    </div>
+                    <div>
+                        <label for="patrimonioNeto" class="block mb-2">Total Patrimonio Neto *</label>
+                        <input type="text" id="patrimonioNeto" name="patrimonioNeto" class="w-full border border-gray-300 rounded p-2" placeholder="Patrimonio Neto" required>
+                    </div>
+                    <div>
+                        <label for="ventasAnuales" class="block mb-2">Total Ventas Anuales *</label>
+                        <input type="text" id="ventasAnuales" name="ventasAnuales" class="w-full border border-gray-300 rounded p-2" placeholder="Ventas Anuales" required>
+                    </div>
+                    <div>
+                        <label for="cuitcliente" class="block mb-2">Suba la Constancia de CUIT *</label>
+                        <input type="file" id="cuitcliente" name="cuitcliente" class="w-full border border-gray-300 rounded p-2" accept=".pdf,.jpg,.png" required>
+                    </div>
+                </div>
+                <div class="mt-6 text-right">
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep()">Siguiente</button>
+                </div>
+            </fieldset>
+
+            <!-- Paso 2: Responsable de Pago -->
+            <fieldset id="paso2" class="form-step hidden">
+                <legend class="text-xl font-semibold mb-4">2. Responsable de Pago</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="nombrePago" class="block mb-2">Nombre *</label>
+                        <input type="text" id="nombrePago" name="nombrePago" class="w-full border border-gray-300 rounded p-2" placeholder="Nombre del responsable" required>
+                    </div>
+                    <div>
+                        <label for="apellidoPago" class="block mb-2">Apellido *</label>
+                        <input type="text" id="apellidoPago" name="apellidoPago" class="w-full border border-gray-300 rounded p-2" placeholder="Apellido del responsable" required>
+                    </div>
+                    <div>
+                        <label for="areaPago" class="block mb-2">Área *</label>
+                        <input type="text" id="areaPago" name="areaPago" class="w-full border border-gray-300 rounded p-2" placeholder="Área" required>
+                    </div>
+                    <div>
+                        <label for="emailPago" class="block mb-2">Email de Consulta de Pagos *</label>
+                        <input type="email" id="emailPago" name="emailPago" class="w-full border border-gray-300 rounded p-2" placeholder="Email para facturación" required>
+                    </div>
+                    <div>
+                        <label for="cargoPago" class="block mb-2">Cargo *</label>
+                        <input type="text" id="cargoPago" name="cargoPago" class="w-full border border-gray-300 rounded p-2" placeholder="Cargo" required>
+                    </div>
+                    <div>
+                        <label for="telefonoPago" class="block mb-2">Número de teléfono de consulta de pagos *</label>
+                        <input type="tel" id="telefonoPago" name="telefonoPago" class="w-full border border-gray-300 rounded p-2" placeholder="Número de teléfono" required>
+                    </div>
+                </div>
+
+                <!-- Botón para abrir el modal del Estatuto -->
+                <div class="mt-6">
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" onclick="openModalEstatuto()">Leer y aceptar el Estatuto</button>
+                </div>
+
+                <!-- Modal del Estatuto -->
+                <div id="modalEstatuto">
+                    <div id="modalContent">
+                        <button class="absolute top-2 right-2 text-gray-500 text-2xl font-bold" onclick="closeModalEstatuto()">&times;</button>
+                        <h2 class="text-xl font-bold mb-4">Nuestro Estatuto:</h2>
+                        <p>Para continuar con el proceso de registración, le pedimos lea atentamente el <span class="text-blue-500">Estatuto de CAEM</span> que se indica a continuación:</p>
+
+                        <div id="terms" class="mt-4 h-64 overflow-y-scroll border border-gray-300 p-4">
+                            <p><strong>ESTATUTO SOCIAL DE LA CÁMARA ARGENTINA DE EMPRESARIOS MINEROS</strong></p>
+                            <p><strong>TÍTULO I. DENOMINACIÓN. DOMICILIO. OBJETO SOCIAL.</strong></p>
+                            <p>Artículo 1°. Denominación. Domicilio. Bajo la denominación CÁMARA ARGENTINA DE EMPRESARIOS MINEROS continúa funcionando la asociación civil sin fines de lucro que fuera originariamente constituida bajo la denominación Asociación Argentina de Empresarios Mineros. La Cámara Argentina de Empresarios Mineros, es una organización empresarial, constituida el 19 de septiembre de 1957 que asocia a personas humanas y jurídicas vinculadas a la actividad minera. Tiene su domicilio legal en la Ciudad Autónoma de Buenos Aires, pudiendo crear filiales, en el territorio de la República Argentina, así como integrar cámaras y otras organizaciones afines.</p>
+                            <p><strong>Artículo 2°. Objeto.</strong></p>
+                            <ul class="list-disc pl-5">
+                                <li>Promover, defender y fortalecer en todas sus etapas, la actividad minera en la República Argentina.</li>
+                                <li>Representar a sus asociados ante las autoridades del país y del extranjero y ante los particulares y otros organismos, asociaciones, entidades o grupos apoyando las gestiones de aquellos relacionadas con la actividad minera sustentable.</li>
+                                <li>Colaborar con las autoridades en el perfeccionamiento de las normas que inciden en cualquiera de las etapas de la actividad minera.</li>
+                                <li>Proponer ante las autoridades competentes las reformas normativas necesarias para lograr eficiencia regulatoria, competitividad económica, desarrollo regional, responsabilidad social corporativa, concientización sobre la importancia de la industria y el mejor empleo de los recursos humanos para el desarrollo de la actividad minera.</li>
+                                <li>Promover la adopción e implementación de estándares conforme a las mejores prácticas ambientales, sociales y económicas que tiendan a un desarrollo sustentable y responsable de la industria minera.</li>
+                                <li>Promover congresos, conferencias, seminarios, exposiciones, eventos y publicaciones para el mejor conocimiento y difusión de la actividad minera.</li>
+                                <li>Promover el intercambio de relaciones con instituciones públicas y organizaciones privadas vinculadas a la minería, tanto nacionales como extranjeras.</li>
+                                <li>Constituir o ingresar a asociaciones, fundaciones y toda otra persona jurídica de cualquier clase, para el mejor cumplimiento de los objetivos preindicados.</li>
+                            </ul>
+                            <p>2.2. A los fines del desarrollo de su objeto la entidad podrá:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li>i. Brindar, con carácter gratuito, asesoramiento técnico y profesional sobre la problemática del sector a sus asociados.  </li>
+                                 <li>ii. Constituirse como árbitro, cuando así lo soliciten sus asociados, a efectos de dirimir conflictos que pudieran suscitarse entre los mismos.  </li>
+                                 <li>iii. Peticionar ante las autoridades Nacionales, Provinciales y Municipales, con el fin de obtener las mejores condiciones para el desarrollo de la actividad minera.  </li>
+                                 <li>iv. Realizar y organizar cursos, seminarios, exposiciones, eventos, congresos y conferencias sobre temas de interés para el sector. </li>
+                                 <li>v. Editar, sin fines de lucro, folletos, revistas y todo otro tipo de publicaciones propias que se relacionen estrictamente con la actividad minera.  </li>
+                                 <li>vi. Realizar toda actividad comunicacional y educativa tendiente a lograr convertir a la Cámara en la voz nacional representativa de la industria minera. </li>
+                                 <li>vii. Actuar como facilitadores y nexo articulador con otros grupos de interés. </li>
+                                 <li>viii. Crear y sostener una biblioteca de interés para el sector. </li>
+                            </ul>
+                            <p><strong>TÍTULO II. CAPACIDAD. PATRIMONIO. RECURSOS SOCIALES.</strong></p>
+                            <p>Artículo 3°. Capacidad.  </p>
+                            <p>La Asociación tiene plena capacidad para adquirir derechos, contraer obligaciones y otorgar toda clase de actos jurídicos que sean compatibles con su naturaleza y no estén prohibidos por las leyes o este estatuto.</p>  
+                            <p>Artículo 4°. Patrimonio.  </p>
+                            <p>Su patrimonio se integra con:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) los bienes de los que es titular actualmente;  </li> 
+                                 <li> b) las contribuciones ordinarias y extraordinarias;   </li> 
+                                 <li> c) los recursos que obtenga del ejercicio de su actividad.  </li> 
+                            </ul>
+                        <p><strong>TÍTULO III. ASOCIADOS. CONDICIONES DE ADMISIÓN. DERECHOS Y OBLIGACIONES.</strong></p>
+                        <p>Artículo 5°. Categorías de asociados. </p>
+                        <p>Se establecen las siguientes categorías de asociados:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Asociados Activos en alguna de las subcategorías previstas en el Art. 6° del presente estatuto;  </li> 
+                                 <li> b) Asociados Adherentes, conforme lo previsto en el Art. 7° del presente estatuto.  </li> 
+                        </ul>
+                        <p>Artículo 6°. Asociados Activos. Subcategorías.  </p>
+                        <p>6.1. Dentro de la categoría de Asociados Activos existen, a su vez, tres subcategorías:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Asociados Activos Empresas Mineras: Podrán integrar esta subcategoría las personas humanas o jurídicas que desarrollen actividades de prospección, exploración, explotación y/o producción mineras y/o procesos complementarios de tratamiento de minerales, en cualquiera de sus etapas.   </li> 
+                                 <li> b) Asociados Activos Cámaras de Empresas de minerales de la segunda y tercera categoría: Podrán integrar esta subcategoría las personas jurídicas que realicen actividades similares a las de esta Cámara siendo sus asociados empresas que desarrollan actividades respecto de minerales de la segunda y tercera categoría conforme al Código de Minería y/o que llevan a cabo actividades de molienda de minerales.  </li> 
+                                 <li> c) Asociados Activos Cámaras Mineras Provinciales: Podrán integrar esta subcategoría las personas jurídicas que realicen actividades similares a las de esta Cámara pero circunscripta dicha actividad al ámbito geográfico de una determinada provincia de la República Argentina.  </li> 
+                            </ul>
+                        <p>6.2.  Las personas que deseen asociarse como asociados activos, en cualquiera de las subcategorías, deberán suministrar los antecedentes para aprobación de la Comisión Directiva, conforme el reglamento que oportunamente dicte la Comisión Directiva en base al presente estatuto. </p>
+                         <li> 6.3. En lo que hace al pago de la contribución variable que establezca la Comisión Directiva, conforme al Art. 8.2. b.1.), el porcentaje que se determine se aplicará sobre las ventas anuales   </li> 
+                        <p>Artículo 7°. Asociados Adherentes. </p>
+                        <p>7.1. Son asociados adherentes las personas humanas o jurídicas que provean bienes y servicios a la actividad minera, y cualquier otra Cámara Empresarial que tenga vinculación con la industria en general aunque no se vincule estrictamente con la actividad minera.  </p>
+                        <p>7.2. Los postulantes para ser admitidos como asociados adherentes deberán suministrar los antecedentes que en cada caso se les requiera. Su solicitud deberá ser presentada ante el Comité Ejecutivo, el que en su caso, lo elevará con su recomendación para aprobación de la Comisión Directiva. </p>
+                        Artículo 8°. Derechos y obligaciones de los asociados activos. 
+                        <p>8.1. Los asociados activos tienen derecho a:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Participar en las asambleas y tomar parte en las deliberaciones con voz y voto.   </li> 
+                                 <li> b) Elegir a los miembros de la Comisión Directiva que les corresponda según este estatuto social.  </li> 
+                                 <li> c) Podrán ser elegidos como miembros de la Comisión Directiva sin que para ello deban acreditar antigüedad alguna como asociados. Cuando se trate de un asociado persona jurídica, éste designará a la persona humana que la represente, pudiendo la misma ser reemplazada en cualquier momento a exclusiva discreción del propio asociado, previa notificación fehaciente a la Cámara.  </li> 
+                                 <li> d) Participar en las actividades de la Cámara, y utilizar sus servicios.   </li> 
+                                 <li> e) Presentar a la Comisión Directiva iniciativas para el mejor desarrollo del sector minero.  </li> 
+                                 <li> f) Solicitar la intervención de la Cámara en los asuntos que consideren de interés.  </li> 
+                            </ul>
+                        <p>8.2. Los asociados activos tienen las siguientes obligaciones:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Cumplir con las obligaciones que establecen el estatuto, los reglamentos y las resoluciones de las asambleas y de la Comisión Directiva;   </li> 
+                                 <li> b) Abonar según sea la subcategoría en donde se encuentren- las contribuciones fijas y/o variables que fije la Comisión Directiva y luego apruebe la asamblea, según el siguiente esquema:  </li> 
+                                 <li> b.1.)  En el caso de los asociados activos Empresas Mineras éstos deberán abonar una contribución fija (la “Contribución Fija”) que determine la Comisión Directiva, más una contribución variable, según el siguiente esquema:  </li> 
+                                 <li>(i) La Contribución Fija podrá variar en el caso de los asociados activos Empresas Mineras según que éstos se dediquen a una o varias de las actividades de prospección, exploración, explotación y/o producción de minería y/o procesos complementarios del tratamiento de minerales.  </li>
+                                 <li>(ii) La contribución variable, a su vez, será determinada por la Comisión Directiva teniendo en consideración un porcentaje de las ventas anuales de cada asociado activo Empresas Mineras del año inmediato anterior al que se apruebe la contribución variable (la “Contribución Variable”). En el caso en que un asociado activo Empresa Minera hubiera decidido el cierre o suspensión de las actividades productivas que la misma venía desarrollando hasta fines del año próximo pasado, deberá hacérselo saber en forma fehaciente a la Comisión Directiva mediante la presentación una nota explicativa que contendrá los detalles principales relativos a dicha decisión. La presentación de dicha nota, con estos requisitos, habilitará al asociado activo Empresa Minera a pedir una reducción de la Contribución Variable, reducción que deberá ser decidida por la Comisión Directiva a su exclusivo criterio, en función de las características del caso.  </li>
+                                 <li> b.2.)  En el caso de los asociados activos Cámaras de Empresas de minerales de la segunda y tercera categoría y de la molienda, y dado que a estos asociados por su propia actividad no les corresponde pagar la Contribución Variable, la Comisión Directiva determinará anualmente el monto de una contribución fija especial (la “Contribución Fija Especial”) que deberán pagar quienes integren esta subcategoría.  </li> 
+                                 <li> b.3.)  Los asociados activos Cámaras Mineras Provinciales no deberán pagar ningún tipo de Contribución Fija ni Contribución Variable, siempre y cuando al menos tres (3) de quienes resulten ser asociados a la Cámara Minera Provincial que corresponda revistan a su vez como miembros asociados activos de esta Cámara. En caso contrario, esta subcategoría de asociado activo deberá pagar la Contribución Fija Especial que la Comisión Directiva determine anualmente para la subcategoría anterior.  </li> 
+                            </ul>
+                        <p>Artículo 9°. Derechos y obligaciones de los asociados adherentes. </p>
+                        <p>9.1. Los asociados adherentes tienen derecho a:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Participar en las asambleas y tomar parte en las deliberaciones con voz y sin voto.  </li> 
+                                 <li> b) Participar en las actividades de la Cámara, y utilizar sus servicios.   </li> 
+                                 <li> c) Presentar a la Comisión Directiva iniciativas para el mejor desarrollo del sector minero.  </li> 
+                                 <li> d) Solicitar la intervención de la Cámara en los asuntos que consideren de interés.   </li> 
+                            </ul>
+                        <p>9.2. Los asociados adherentes tienen las siguientes obligaciones:  </p>
+                            <ul class="list-disc pl-5">
+                         <li> a) Cumplir con las obligaciones que establecen el estatuto, los reglamentos y las resoluciones de las asambleas y de la Comisión Directiva.  </li> 
+                         <li> b) Abonar la Contribución Fija que anualmente determine la Comisión Directiva.  </li> 
+                            </ul>
+                        Artículo 10°. Pérdida del carácter de asociado. Causales.  
+                            <ul class="list-disc pl-5">
+                        <p>10.1. El carácter de asociado se pierde por:</p>
+                              <ul class="list-disc pl-5">
+                                 <li> a) La renuncia aceptada por la Comisión Directiva.   </li> 
+                                 <li> b) El fallecimiento o incapacidad, tratándose de personas humanas.   </li> 
+                                 <li> c) La disolución, declaración de quiebra, o liquidación sin quiebra tratándose de personas jurídicas. En caso de rehabilitación judicial, el ex-asociado podrá reincorporarse sin otro requisito que su solicitud en tal sentido, en cuyo caso conservará la antigüedad que tenía.   </li> 
+                                 <li> d) La exclusión dispuesta por la Asamblea con fundamento en:   </li> 
+                            </ul>
+                              <ul class="list-disc pl-5">
+                                <li>i. El incumplimiento de las obligaciones del asociado. </li> 
+                                <li>ii. La inconducta notoria del asociado o el haber realizado actos perjudiciales para la entidad.  </li> 
+                                <li>iii. El haber cesado el asociado activo o el asociado adherente en el desarrollo de la actividad que justifica su calidad de tal.  </li> 
+                                <li>iv. La mora en el pago de tres (3) contribuciones, cualquiera sea su naturaleza, y según corresponda a la categoría de asociado.  </li> 
+                                <li>10.2. El asociado que haya sido excluido podrá solicitar la readmisión luego de transcurridos dos años contados desde la fecha de la exclusión y, en su caso, deberá cancelar las contribuciones que adeudaba, más los intereses que razonablemente fije la Comisión Directiva. La Comisión Directiva tramitará cada caso y elevará sus conclusiones a la Asamblea para que ésta adopte la decisión que corresponda.  </li> 
+                            </ul>
+                        
+                        <p>Artículo 11°. Suspensión del carácter de asociado. </p>
+                        <ul class="list-disc pl-5">
+                        El carácter de asociado se suspende por decisión de la Comisión Directiva adoptada con fundamento en cualquiera de las causales indicadas en el inciso d) del artículo anterior, hasta la reunión de la Asamblea Ordinaria siguiente, que deberá considerar la referida decisión.  
+                        <p>Artículo 12°. Derecho de defensa de los asociados frente a la suspensión. </p>
+                        <p>Los asociados que se encuentren en posición de ser suspendidos por decisión de la Comisión Directiva adoptada en los términos del artículo 11°, tendrán garantizado su derecho a defensa ante la Comisión Directiva en forma previa a la aplicación de las sanciones. Asimismo, dentro de los quince (15) días hábiles contados desde notificados de las decisiones de la Comisión Directiva, los asociados podrán interponer recurso de apelación, el que será considerado por la primera Asamblea Ordinaria que se celebre con posterioridad a la interposición del recurso. </p>
+                        <p>Artículo 13°. Efectos del atraso en el pago de las contribuciones. </p>
+                        <p>Ningún asociado podrá participar en las Asambleas ni ejercer sus derechos, si está atrasado en el pago  de la contribución que le corresponda según su categoría.  </p>
+                         <p><strong>TÍTULO IV. COMISIÓN DIRECTIVA. COMISIÓN REVISORA DE CUENTAS.</strong></p>
+                        <p>Artículo 14°. De la Comisión Directiva.  </p>
+                        <p>14.1. La entidad será dirigida y administrada por una Comisión Directiva compuesta de dieciséis (16) a veintidós (22) miembros titulares, según lo resuelva la Asamblea, la que a su vez designará hasta cinco (5) suplentes. Para integrar los órganos sociales se requiere ser asociado activo.  </p>
+                        <p>14.2. De los miembros titulares al menos deberá haber: a) Dos (2) representantes del Consejo de Cámaras Provinciales –en tanto dicho Consejo se encuentre en funcionamiento- los que serán elegidos conforme el procedimiento previsto en el Título VIII de este estatuto; y b) Tres (3) representantes de las Cámaras de Empresas de minerales de la segunda y tercera categoría. El resto de los integrantes de la Comisión Directiva provendrá de los asociados activos Empresas Mineras, tres (3) de los cuales serán miembros de la lista que haya obtenido el segundo lugar en las elecciones que se realicen para la elección de miembros de la Comisión Directiva. Ninguno de ellos sin embargo, podrá ser presidente o vicepresidente de la entidad.</p>
+                        <p>Artículo 15°. Fiscalización.  </p>
+                        <p>La fiscalización de la entidad estará a cargo de una Comisión Revisora de Cuentas compuesta de dos (2) miembros titulares designados por la Asamblea, la que a su vez designará otros tantos suplentes. Estos cargos serán ad honorem, no teniendo en consecuencia derecho a cobrar una retribución. </p>
+                        <p>Artículo 16°. Mandato. Reelección. </p>
+                        <p>16.1. Los miembros titulares y suplentes de los órganos sociales ejercerán sus cargos por el término de dos (2) años, manteniéndose en ellos hasta la celebración de la primera asamblea ordinaria posterior al vencimiento de ese plazo. Los suplentes reemplazarán a los titulares en caso de fallecimiento, licencia, ausencia, renuncia o destitución. El reemplazo se efectuará respetando el orden de elección de los suplentes y por el término del impedimento o hasta completar el período que faltaba al titular reemplazado.  </p>
+                        <p>16.2. Los integrantes de los órganos sociales podrán ser reelegidos indefinidamente, con excepción del Presidente, quién dura en sus funciones dos (2) años, y podrá ser reelecto por un sólo período consecutivo. Con posterioridad sólo podrá ser electo como Presidente siempre que observe un intervalo de un período sin ocupar tal cargo.  </p>
+                        <p>Artículo 17°. Designación de autoridades de la Comisión Directiva. </p>
+                        <p>En reunión que se celebrará el mismo día de su elección los miembros de la Comisión Directiva designarán por el término de dos (2) años a: un Presidente, un Vicepresidente I, un Vicepresidente II, un Vicepresidente III, un Vicepresidente IV, un Vicepresidente V, un Vicepresidente VI, un Secretario, un Prosecretario, un Tesorero, y un Protesorero. Los Vicepresidentes reemplazarán al Presidente en el orden indicado, en caso de fallecimiento, licencia, ausencia, renuncia o destitución de aquél, y el Prosecretario y el Protesorero reemplazarán al Secretario y al Tesorero en las mismas circunstancias.  </p>
+                        <p>Artículo 18°. De las reuniones de la Comisión Directiva.  </p>
+                        <p>18.1. La Comisión Directiva se reunirá como mínimo seis (6) veces por año calendario o en exceso cuando lo determine el Presidente o lo soliciten al menos tres (3) de sus miembros o la propia Comisión Revisora de Cuentas, debiendo en estos dos últimos casos realizarse la reunión dentro de los diez (10) días de efectuado el pedido. Las reuniones se efectuarán en la fecha y hora que determine la propia Comisión Directiva en su reunión anterior las que serán comunicadas con al menos tres (3) días de anticipación, mediante correo electrónico o circular al domicilio fijado por el miembro.  </p>
+                        <p>18.2. Las reuniones de la Comisión Directiva se celebrarán válidamente con la presencia de la mayoría absoluta de sus miembros y en todos los casos las decisiones se adoptarán también por mayoría absoluta de los presentes, teniendo quien las presida el voto de desempate. Los miembros de la Comisión Directiva no podrán delegar el desempeño de sus cargos entre ellos o a terceros. </p>
+                        <p>18.3. Todo miembro de la Comisión Directiva que no concurra a cuatro (4) reuniones seguidas u ocho (8) alternadas sin justificar sus inasistencias podrá ser considerado como renunciante por la Comisión Directiva.  </p>
+                        <p>Artículo 19°. Atribuciones y deberes de la Comisión Directiva. </p>
+                        <p>Son atribuciones y deberes de la Comisión Directiva: </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Ejecutar las decisiones de las Asambleas; cumplir y hacer cumplir el estatuto y los reglamentos interpretándolos en caso de duda y con cargo de dar cuenta de ello a la primera asamblea que con posterioridad se realice.   </li> 
+                                 <li> b) Ejercer la administración de la entidad.  </li> 
+                                 <li> c) Convocar a asambleas e incluir en el Orden del Día de ellas los asuntos que le requiera como mínimo el diez por ciento (10%), de los asociados activos.  </li> 
+                                 <li> d) Establecer el monto que corresponde a la Contribución Fija, a la Contribución Fija Especial y a la Contribución Variable, las que tendrán plena vigencia hasta la reunión de la primera Asamblea posterior, la cual deberá expedirse al respecto. Si la decisión de la Asamblea no fuese ratificatoria, la misma no tendrá efecto retroactivo.  </li> 
+                                 <li> e) Aceptar o rechazar donaciones, legados, etc. que se hagan a la Cámara.  </li> 
+                                 <li> f) Establecer el reglamento para la admisión de nuevos socios.  </li> 
+                                 <li> g) Recomendar la admisión de nuevos socios, resolver las solicitudes de admisión de quienes deseen incorporarse a la entidad y las renuncias que presenten los asociados.  </li> 
+                                 <li> h) Crear y suprimir subcomisiones, fijar sus atribuciones y designar a sus miembros y a quien las presidirá, permaneciendo en sus cargos hasta la renovación de la Comisión Directiva salvo exclusión dispuesta por este Órgano o supresión de la subcomisión.   </li> 
+                                 <li> i) Tramitar los casos previstos en el inciso d) del Art. 10 y elevar sus conclusiones a la Asamblea.  </li> 
+                                 <li> j) Tramitar y resolver los casos de suspensión de asociados de acuerdo con lo previsto en el Art.11.  </li> 
+                                 <li> k) Nombrar al personal de la entidad, fijar su remuneración, determinar sus obligaciones, sancionarlo y despedirlo.  </li> 
+                                 <li> l) Presentar a la Asamblea ordinaria la memoria, el balance general, el inventario, la cuenta de gastos y recursos y el informe de la Comisión Revisora de Cuentas, documentación que deberá poner a disposición de los asociados en la sede de la entidad con diez (10) días de anticipación a la asamblea.   </li> 
+                                 <li> m) Otorgar todos los actos que resulten compatibles con su personalidad, con cargo de dar cuenta de ello a la primera asamblea que se realice, salvo los actos de disposición de inmuebles y de constitución de derechos reales sobre ellos para los cuales se requerirá la previa autorización de la Asamblea.  </li> 
+                                 <li> n) Autorizar todo acto jurídico para el desarrollo de los fines de la Cámara.  </li> 
+                                 <li> o) Dictar los reglamentos internos necesarios para el cumplimiento del objeto de la entidad y requerir su aprobación a la Inspección General de Justicia antes de su entrada en vigencia.  </li> 
+                                 <li> p) Crear un Comité Ejecutivo integrado por once (11) miembros a saber: el Presidente, los seis Vicepresidentes, el Secretario, el Pro-Secretario,  el Tesorero, y el Pro-Tesorero, en quien delegará la gestión ordinaria de la entidad conforme lo previsto en el Art. 26 del presente. En este Comité Ejecutivo siempre deberá haber un (1) integrante que represente a los asociados  </li> 
+                                         activos Cámaras Empresariales de minerales de segunda y tercera categoría y de la molienda, un (1) representante que represente a los asociados activos Cámaras Mineras Provinciales y un (1) miembro que represente a lista que haya obtenido el segundo lugar  en las elecciones que se realicen para la elección de miembros de la Comisión Directiva. El resto representará a los asociados activos Empresas Mineras. </li>
+                                 <li> q) Nombrar a un Director Ejecutivo, el que en su caso cumplirá con las funciones que la misma Comisión Directiva le fije, cobrando la retribución que la misma también disponga.  </li> 
+                            </ul>	 
+                        <p>Artículo 20°. Supuesto de reducción del número de miembros de la Comisión Directiva. </p>
+                        <p>Cuando el número de miembros de la Comisión Directiva se reduzca en medida que imposibilite la formación de quórum, los restantes o la Comisión Revisora de Cuentas en el caso de vacancia total, convocarán a asamblea para su reconstitución dentro de los diez (10) días de constatado el hecho. Hasta tanto se produzca la reconstitución de la Comisión Directiva, sus miembros tendrán todas las facultades necesarias para resolver los asuntos que requieran decisión impostergable.  </p>
+                        <p>Artículo 21°. De la Comisión Revisora de Cuentas. </p>
+                        <p>21.1. La Comisión Revisora de Cuentas integrada por dos (2) miembros titulares y dos (2) suplentes tendrá un mandato de dos (2) años, a cuyo vencimiento podrán ser reelegidos.  </p>
+                        <p>21.2. Son sus atribuciones y deberes:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Examinar la documentación contable de la entidad por lo menos cada tres (3) meses.  </li> 
+                                 <li> b) Asistir con voz pero sin voto a las reuniones de la Comisión Directiva toda vez que lo estime conveniente.  </li> 
+                                 <li> c) Fiscalizar la administración comprobando la existencia de los fondos y valores de la entidad.  </li> 
+                                 <li> d) Verificar el cumplimiento de las leyes, del estatuto y de los reglamentos.  </li> 
+                                 <li> e) Solicitar las explicaciones que estime necesarias.  </li> 
+                                 <li> f) Dictaminar respecto a la memoria, el balance general, el inventario, la cuenta de gastos y recursos que la Comisión Directiva someta a la asamblea ordinaria.  </li> 
+                                 <li> g) Convocar a Asamblea Ordinaria toda vez que la Comisión Directiva omita hacerlo.  </li> 
+                                 <li> h) Convocar a Asamblea Ordinaria cuando sea requerido por el 30% de los asociados activos y la Comisión Directiva omitiere hacerlo, y a asamblea extraordinaria cuando lo juzgue necesario.  </li> 
+                                 <li> i) Vigilar la liquidación de la entidad.  </li> 
+                                 <li> j) Ejercer sus atribuciones absteniéndose de entorpecer la regularidad de la administración de la entidad.  </li> 
+                         </ul>	 
+                         <p><strong>TÍTULO V. DE LAS AUTORIDADES.</strong></p>
+                        <p>Artículo 22°. Atribuciones y deberes del Presidente. </p>
+                        <p>Son deberes y atribuciones del Presidente o de quien lo reemplace estatuariamente:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Ejercer la representación legal de la entidad.   </li> 
+                                 <li> b) Representar a la Cámara ante autoridades nacionales y provinciales.   </li> 
+                                 <li> c) Intervenir con amplias facultades en todo proceso judicial, administrativo o arbitral en el cual la Cámara sea parte.   </li> 
+                                 <li> d) Citar a las asambleas y convocar a sesiones de la Comisión Directiva y presidirlas, y convocar y presidir las reuniones del Comité Ejecutivo.   </li> 
+                                 <li> e) Firmar juntamente con el Secretario toda la documentación que emane de la entidad, y con el Tesorero toda la documentación de índole contable.   </li> 
+                                 <li> f) Adoptar y ejecutar las decisiones urgentes que sean necesarias para la administración de la entidad, dando cuenta de ellas a la Comisión Directiva o al Comité Ejecutivo en la primera sesión que dichos cuerpos celebren.   </li> 
+                                 <li> g) Velar por el fiel cumplimiento del Estatuto, sus reglamentos y las resoluciones que dicte la Asamblea General de asociados, la Comisión Directiva y/o el Comité Ejecutivo.   </li> 
+                                 <li> h) Proponer al Comité Ejecutivo las comisiones y delegados que sean necesarios y nombrarlos en caso de urgencia.   </li> 
+                                 <li> i) Adoptar administrativamente las medidas de orden interno que estime convenientes.   </li> 
+                                 <li> j) Proponer a la Comisión Directiva el nombramiento del Director Ejecutivo y de los Gerentes, Consultores Técnicos y Legales.   </li> 
+                                 <li> k) Ejercer las funciones y atribuciones señaladas en el presente Estatuto y las que la Asamblea General de Asociados y la Comisión Directiva le asignen.   </li> 
+                                 <li> l) Dirimir en caso de empate, en las votaciones de la Comisión Directiva.   </li> 
+                            </ul>	 
+                        <p>Artículo 23°. Atribuciones y deberes del Secretario. </p>
+                        <p>Son deberes y atribuciones del Secretario o de quien estatutariamente lo sustituya: </p>
+                            <ul class="list-disc pl-5"> 
+                                 <li> a) Redactar las actas de las asambleas y de las reuniones de la Comisión Directiva.  </li> 
+                                 <li> b) Firmar con el Presidente la documentación que emane de la entidad.   </li> 
+                                 <li> c) Llevar los Libros de Actas y con el Tesorero el Libro de Registro de Asociados.   </li> 
+                                 <li> d) Supervisar la confección del padrón electoral.  </li> 
+                        </ul>	 
+                        <p>Artículo 24°. Atribuciones y deberes del Tesorero. </p>
+                        <p>Son deberes y atribuciones del Tesorero o de quien estatutariamente lo reemplace:  </p>
+                            <ul class="list-disc pl-5">
+                                 <li> a) Llevar la contabilidad de la entidad y con el Secretario el Libro de Registro de Asociados.   </li> 
+                                 <li> b) Presentar mensualmente a la Comisión Directiva un balance y preparar los estados contables que se someterán a la Asamblea Ordinaria Anual.   </li> 
+                                 <li> c) Firmar con el Presidente la documentación contable de la entidad.   </li> 
+                                 <li> d) Satisfacer los pedidos de información de índole contable que le pida la Comisión Revisora de Cuentas.   </li> 
+                                 <li> e) Dar a los fondos de la entidad el destino que determine la Comisión Directiva.   </li> 
+                            </ul>
+                        <p>Artículo 25°. Funciones de los miembros titulares y suplentes de la Comisión Directiva. </p>
+                        <p>Los demás miembros titulares de la Comisión Directiva desempeñarán las funciones que dicho cuerpo les asigne, y los suplentes reemplazarán a los titulares cuando así corresponda, pudiendo también asistir a las reuniones de la Comisión Directiva con voz pero sin voto, no computándose su presencia para la existencia de quórum.  </p>
+                        <p>Artículo 26°. Del Comité Ejecutivo.  </p>
+                            <ul class="list-disc pl-5">
+                                 <li>26.1. El Comité Ejecutivo, en el caso de ser creado por la Comisión Directiva, será presidido por el Presidente de Comisión Directiva, o por quien estatutariamente lo reemplace. Las decisiones adoptadas por el Comité Ejecutivo serán válidas y vinculantes para la Asociación. El Comité Ejecutivo informará en oportunidad de celebrarse las reuniones periódicas de la Comisión Directiva respecto de las decisiones ordinarias ya adoptadas.  </li>
+                                 <li>26.2. Se reunirá con la periodicidad que el propio Comité Ejecutivo determine.  </li>
+                                 <li>26.3.  Son deberes y atribuciones del Comité Ejecutivo, quién actúa por delegación de la Comisión Directiva, atender todos los asuntos que ésta le encomiende y adoptar las medidas necesarias cuando así lo requieran situaciones urgentes.  </li>
+                                 <li>26.4. Sus reuniones se celebrarán válidamente con la presencia de la mayoría absoluta de sus miembros y sus decisiones las adoptará también por mayoría absoluta de los presentes teniendo quien preside el voto de desempate.  </li>
+                            </ul>
+                         <p><strong>TÍTULO VI. DE LAS ASAMBLEAS.</strong></p>
+                        <p>Artículo 27°. Asamblea Ordinaria. </p>
+                            <ul class="list-disc pl-5">
+                                 <li> La Asamblea Ordinaria será convocada dentro de los cuatro (4) meses posteriores al cierre del ejercicio, que tendrá lugar el 31 de Diciembre de cada año, y en ella se:   </li> 
+                                 <li> a) Considerará la documentación a la que se refiere el inciso l) del Art. 19.   </li> 
+                                 <li> b) Designará, si corresponde, a los miembros titulares y suplentes de la Comisión Directiva y de la Comisión Revisora de Cuentas.   </li> 
+                                 <li> c) Tratará cualquier otro punto incluido en el Orden del Día.   </li> 
+                                 <li>Artículo 28°. Asamblea Extraordinaria. </li>
+                                 <li>La Asamblea Extraordinaria se convocará siempre que la Comisión Directiva lo estime necesario, o cuando así lo solicite la Comisión Revisora de Cuentas o el treinta por ciento (30%) de los asociados activos, cuyos pedidos serán resueltos dentro de los diez (10) días de </li>
+                                 <li>presentados, celebrándose la asamblea dentro de los treinta (30) días contados desde la fecha en que se dicte la resolución que acceda a la petición.  </li>
+                                 <li>Artículo 29°. Citación a asamblea.  </li>
+                                 <li>29.1. La citación de los asociados a asamblea podrá efectuarse mediante correo electrónico o por circular.  </li>
+                                 <li>29.2. En el caso de hacerse por correo electrónico el mismo se enviará a la dirección que cada asociado informe previamente a la Cámara. Cuando se utilice el correo electrónico el asociado deberá confirmar la recepción del correo electrónico de convocatoria a la asamblea dentro de los cinco (5) días corridos contados desde emitido el mismo. De no recibirse la confirmación de recepción, la Cámara procederá a notificar al asociado mediante circular la que deberá ser remitida con al menos quince (15) días corridos de antelación a la celebración de la asamblea a la cual se convoca.  </li>
+                                 <li>29.3. Cuando se cite a los asociados por circular, la misma deberá ser remitida al domicilio fijado por aquellos.  </li>
+                                 <li>29.4. Cualquiera sea el método de comunicación siempre se deberá transcribir el Orden del Día y, además, se indicará qué documentación relacionada con la asamblea queda a disposición de los asociados en la sede de la entidad.  </li>
+                                 <li>Artículo 30°. Quórum en las asambleas. </li>
+                                 <li>Cualquiera sea la clase de asamblea o la índole de los asuntos que en ella se traten excepto en el caso de disolución, el quórum se formará con la presencia de la mayoría absoluta de los asociados activos con derecho a voto, y si media hora después de fijada para su celebración no se hubiere alcanzado dicha mayoría se celebrará válidamente con el número de asociados activos presentes.  </li>
+                                 <li>Artículo 31°. Presidencia de las asambleas. </li>
+                                 <li>El Presidente de la Comisión Directiva, o quien válidamente lo sustituya presidirá las asambleas.  </li>
+                                 <li>Artículo 32°. Mayorías. </li>
+                                 <li>32.1. En todos los casos las decisiones se adoptarán por mayoría absoluta de votos teniendo cada asociado activo derecho a un (1) voto y el Presidente voto decisivo en caso de empate. Los miembros de los órganos de la Cámara no podrán votar en asuntos relacionados con su gestión ni en aquellos temas en los cuales pudieren tener un conflicto de interés. </li>
+                                 <li>32.2. Cuando en una asamblea se considerare la aprobación o autorización de gastos a ser atendidos sustancialmente con fondos resultantes de Contribuciones Variables, para la votación  del punto del orden del día que contemple esta cuestión, el asociado activo que integre la subcategoría “Empresas Mineras” y pague una Contribución Variable que sea igual o </li>
+                                 <li>superior a  dos veces la Contribución Fija que pague un asociado activo de la misma subcategoría que no deba pagar la Contribución Variable, dicho asociado activo tendrá dos (2) votos por asociado. En el supuesto en que la Contribución Variable que pague dicho asociado activo sea igual o superior a cuatro veces la Contribución Fija que pague un asociado activo de la misma subcategoría que no deba pagar la Contribución Variable, dicho asociado activo tendrá derecho a tres (3) votos por asociado. </li>
+                            </ul>
+                         <p><strong>TÍTULO VII. CONSEJO DE CÁMARAS PROVINCIALES</strong></p>
+                        <p>Artículo 33°. Del Consejo de Cámaras Provinciales. </p>
+                            <ul class="list-disc pl-5">
+                                 <li>33.1. Se crea el Consejo de Cámaras Provinciales, compuesto por los asociados activos Cámaras Mineras Provinciales. Este Consejo de Cámaras Provinciales no podrá ser integrado por más de dos Cámaras Mineras por cada provincia de la República Argentina.  </li>
+                                 <li>33.2. El Consejo de Cámaras Provinciales, mientras se encuentre funcionando, tendrá representación en la Comisión Directiva en tanto dos (2) asociados activos Cámaras Mineras Provinciales serán miembros de dicha Comisión Directiva y en el Comité Ejecutivo, en tanto un (1) miembro de los Asociados Activo Cámaras Mineras Provinciales integrará dicho Comité Ejecutivo. Los miembros elegidos durarán dos (2) años en sus funciones teniendo igual régimen que el resto de los miembros que conformen la Comisión Directiva.  </li>
+                                 <li>33.3. El Consejo de Cámaras Provinciales se reunirá al menos tres (3) veces al año, pudiendo hacerlo con mayor frecuencia, si así lo considerara necesario.   </li>
+                                 <li>33.4. Son atribuciones y deberes del Consejo de Cámaras Provinciales: </li>
+                                 <li>a) Proponer y tratar todos los temas relacionados con la problemática minera de las provincias que representan, pudiendo definir alternativas y soluciones a las mismas. </li>
+                                 <li>b) Seleccionar los asuntos que por su importancia y/o complejidad deban ser tratados en la Comisión Directiva y será responsabilidad de los representantes nombrados a tal efecto, hacer el planteo y proponer las soluciones en la primera reunión de la Comisión Directiva. </li>
+                                 <li>c) Interactuar con todas las comisiones específicas de la Cámara. </li>
+                                 <li>33.5. Todos los cargos de miembros que integren este Consejo son ad honorem, no teniendo por tanto derecho a cobrar una retribución. </li>
+                            </ul>
+                         <p><strong>TÍTULO VIII. MECANISMO DE ELECCIÓN DE AUTORIDADES</strong></p>
+                        <p>Artículo 34°.  Proceso de elección. </p>
+                        <p>En cumplimiento de lo previsto en este estatuto y con el objeto de integrar los órganos de la Cámara, cada dos (2) años, se llevarán a cabo elecciones cumpliendo con el siguiente procedimiento: </p>
+                            <ul class="list-disc pl-5">
+                                 <li>34.1. La elección de las autoridades se realizará el mismo día en que se celebre la asamblea ordinaria convocada a tal fin y en forma previa al inicio de la misma. </li>
+                                 <li>34.2.  En la misma reunión en donde la Comisión Directiva convoque a la asamblea general ordinaria para elegir autoridades se procederá a designar una Comisión de Escrutinio que estará integrada por tres (3) asociados activos que tendrá por fin:  </li>
+                                 <li>a) Presenciar el acto eleccionario controlando la normalidad del mismo y que emitan sus votos solo aquellos asociados activos que se encuentran en el padrón de votación;  </li>
+                                 <li>b) Proceder luego de finalizado el escrutinio al conteo de los votos y a levantar un acta con los resultados obtenidos en la elección, la que elevará al Presidente de la asamblea con la firma de sus tres (3) integrantes. Cualquier cuestión que se presente en el acto eleccionario será dirimida exclusivamente por la Comisión de Escrutinio por decisión de la mayoría de sus miembros. La Comisión Directiva en la misma reunión en donde dispone la convocatoria podrá delegar en el Comité Ejecutivo el seguimiento y toma de decisiones respecto de los actos a cumplirse hasta llegar al acto eleccionario. </li>
+                                 <li>34.3. Como mínimo cuarenta y cinco (45) días corridos antes de la fecha de celebración de la asamblea para designar autoridades, la Comisión Directiva hará saber por circular a todos sus asociados que en la sede se encuentra a su disposición la nómina de los miembros asociados activos que se encuentran en condiciones de ser elegidos y la cantidad de votos que le corresponden a cada asociado activo. Luego de ello podrán presentarse impugnaciones hasta treinta y cinco (35) días corridos contados antes de la fecha en que se celebrará la asamblea. Dichas impugnaciones, en su caso, deberán ser resueltas por la Comisión Directiva o en su caso por el Comité Ejecutivo, antes de los treinta (30) días corridos contados antes de celebrarse la asamblea. Luego de tratadas dichas impugnaciones, la Comisión Directiva o en su caso el Comité Ejecutivo pondrá a disposición de los asociados la nueva lista de asociados –libre de impugnaciones- que se hallan en condiciones de ser elegidos y la cantidad de votos correspondientes. </li>
+                                 <li>34.4. Lista de candidatos. Los asociados activos podrán presentar con al menos veinticinco (25) días corridos de antelación a la elección y para su oficialización listas de candidatos a cubrir la totalidad de los integrantes de la Comisión Directiva, debiendo incluir en las mismas a tres (3) representantes de las Cámaras Empresariales de minerales de la segunda y tercera categoría y de la molienda y a dos (2) representantes correspondientes a los asociados activos Cámaras Mineras Provinciales.   </li>
+                                 <li>34.5. En su caso, cada lista que se presente deberá tener un color que la identifique definiendo los candidatos propuestos. Cada lista deberá presentar los avales, consistente en las firmas de los asociados activos que apoyan dichas candidaturas. Para poder competir se deberán presentar avales equivalentes al treinta por ciento (30%) como mínimo de los asociados </li>
+                                 <li>activos en condiciones de votar. Cada lista estará representada por un apoderado quien será el responsable de cumplir con las formalidades de la elección. </li>
+                                 <li>34.6. Con al menos veinte (20) días corridos de antelación a la fecha de la asamblea, la Comisión Directiva o en su caso el Comité Ejecutivo: (a) Se expedirá sobre el cumplimiento de los requisitos formales de las listas y procederá en su caso a su oficialización; (b) Se aprobará el padrón de asociados que se encuentran aptos para votar el día de la asamblea; y (c) Comunicará a los asociados mediante circular la existencia de las listas oficializadas y la fecha, hora y lugar en que se celebrará la asamblea. </li>
+                                 <li>34.7. Parar poder ejercer el voto, el asociado deberá estar al día con el pago de las contribuciones debidas y acreditar representación suficiente. La documentación que acredite la representación para votar deberá ser presentada ante la Comisión de Escrutinio, en copia certificada por ante escribano público, como mínimo con tres (3) horas antes de la apertura de la elección, para poder revisar la validez de la misma. </li>
+                                 <li>34.8. Los votos se emitirán en sobre cerrado agregando la boleta correspondiente a la lista elegida. </li>
+                                 <li>34.9. El acto eleccionario se clausurará media hora antes de la hora fijada para la iniciación de la asamblea, siendo el resultado de la elección válido cualquiera sea el número de votos emitidos. </li>
+                        </ul>
+                         <p><strong>TÍTULO IX. DISOLUCIÓN.</strong></p>
+                        <p>Artículo 35°. De la disolución.  </p>
+                        <p>La entidad no se disolverá mientras exista un número de asociados suficiente para permitir el regular funcionamiento de los órganos sociales, dispuestos a sostenerla. En caso de resolverse su disolución, la liquidación de su patrimonio estará a cargo de la Comisión Directiva o de la Comisión Liquidadora que por decisión de la mayoría absoluta designe la asamblea en la que se decida la disolución. El remanente de los bienes, una vez pagadas las deudas, se destinará a una entidad de bien común, sin fines de lucro vinculada con la actividad minera, con personería jurídica, domiciliada en el país y que se halle exenta de todo gravamen en el Orden Nacional, Provincial y Municipal.  <p>
+
+                </div>
+
+                        <div class="my-4">
+                            <div id="terms-progress-bar"></div>
+                        </div>
+
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox" id="accept-terms" class="mr-2" disabled>
+                            <label for="accept-terms">He leído y aceptado los términos y condiciones del Estatuto de CAEM</label>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button id="continue-btn" class="px-4 py-2 bg-green-500 text-white rounded-lg" disabled onclick="closeModalEstatuto()">Continuar</button>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Información adicional -->
+ <div class="mt-6">
+    <h2 class="text-xl font-semibold mb-4">Información a tener en cuenta</h2>
+    <p class="mb-4">
+        Los precios tienen validez para los respectivos períodos indicados. Los valores de la cuota mensual
+        son de referencia y estarán sujetos a la evolución mensual del índice de inflación publicado por el
+        INDEC y aprobado por la comisión directiva de CAEM.
+    </p>
+    <p class="mb-4">
+      lorena lipsum   lorena luporini lipsum lorena lipsum   lorena luporini lipsum lorena lipsum   lorena luporini lipsum lorena lipsum   lorena luporini lipsum
+    </p>
+    <p class="mb-4">
+        <strong>*</strong> La única opción de pago para la cuota mensual de la Categoría A y B de adherentes
+        es el débito automático.
+    </p>
+    <p class="mb-4">
+        lorena lipsum   lorena luporini lipsum
+    </p>
+    <p class="mb-4">
+        <strong>*</strong> Los valores semestrales incluyen un 18% de bonificación por pago a término.
+    </p>
+    <p class="mb-4">
+        Las empresas que deciden formar parte de la comunidad CAEM adhieren al <strong>Código </strong>
+        y el <strong>Estatuto</strong> de la institución, documentos de referencia y guía para el accionar de
+        los socios.
+    </p>
+    <p class="mb-4">
+        Las empresas socias quedarán comprometidas a comunicar cualquier modificación en la nómina de sus
+        representantes y actualizar los datos de contacto a través del siguiente <strong>Formulario de
+            Actualización</strong>.
+    </p>
+    <p class="mb-4">
+        consultas con ximena
+        <a href="mailto:ximena.arzuaga@caem.com.ar"
+            class="text-blue-600 underline">ximena.arzuaga@caem.com.ar</a> 
+       
+    </p>
+</div>
+                <div class="mt-6 flex justify-between">
+                    
+                    <button type="button" class="px-4 py-2 bg-gray-400 text-white rounded" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep()">Siguiente</button>
+                </div>
+            </fieldset>
+
+            <!-- Paso 3: Envío de Facturas -->
+            <fieldset id="paso3" class="form-step hidden">
+                <legend class="text-xl font-semibold mb-4">3. Envío de Facturas</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="emailFacturaEnvio" class="block mb-2">Email para facturas *</label>
+                
+                        <input type="email" id="emailFacturaEnvio" name="emailFacturaEnvio" class="w-full border border-gray-300 rounded p-2" placeholder="Email para facturación" required>
+                    </div>
+                    <div>
+                        <label for="telefonoFacturaEnvio" class="block mb-2">Teléfono *</label>
+                        <input type="tel" id="telefonoFacturaEnvio" name="telefonoFacturaEnvio" class="w-full border border-gray-300 rounded p-2" placeholder="Teléfono" required>
+                    </div>
+                    <div>
+                        <label for="membresia" class="block mb-2">Membresía *</label>
+                        <select id="membresia" name="membresia" class="w-full border border-gray-300 rounded p-2" required>
+                            <option value="" disabled selected>Seleccionar una opción</option>
+                            <option>Mensual</option>
+                            <option>Anual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sitiowebFacturas" class="block mb-2">Página web o portal de ingreso de facturas *</label>
+                        <input type="text" id="sitiowebFacturas" name="sitiowebFacturas" class="w-full border border-gray-300 rounded p-2" placeholder="Sitio web" required>
+                    </div>
+                    <div>
+                        <label for="requiereOC" class="block mb-2">¿Requiere Orden de Compra (OC)/Hoja de Entrada de Servicios (HES)? *</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" id="requiereOCSi" name="requiereOC" value="si" class="mr-2" required>
+                                Sí
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" id="requiereOCNo" name="requiereOC" value="no" class="mr-2" required>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="requiereWEB" class="block mb-2">¿Requiere que la factura sea subida a algún portal o sitio web y en consecuencia realizar el alta de usuario proveedor? *</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" id="requiereWEBSi" name="requiereWEB" value="si" class="mr-2" required>
+                                Sí
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" id="requiereWEBNo" name="requiereWEB" value="no" class="mr-2" required>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between">
+                    <button type="button" class="px-4 py-2 bg-gray-400 text-white rounded" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep()">Siguiente</button>
+                </div>
+            </fieldset>
+
+            <!-- Paso 4: Integrantes del Directorio -->
+            <fieldset id="paso4" class="form-step hidden">
+                <legend class="text-xl font-semibold mb-4">4. Integrantes de la Sociedad - Gerentes y contactos </legend>
+                <div class="grid grid-cols-1 gap-4">
+                     <!-- Lista de Áreas -->
+    <div class="mb-6">
+        <p class="text-base font-medium">Por favor, completá los datos para las siguientes áreas:</p>
+        <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página</title>
+    <style>
+        .list-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Dos columnas para organizar mejor */
+            gap: 20px;
+            font-size: 1.25rem;
+            list-style: none; /* Quitar el marcador de lista */
+            padding-left: 0; /* Eliminar el padding por defecto */
+            font-family: Arial, sans-serif; /* Cambiar la fuente a Arial */
+        }
+
+        .list-container li {
+            margin-bottom: 10px;
+            padding: 15px; /* Espacio interno */
+            border: 1px solid #ddd; /* Borde para la cuadrícula */
+            border-radius: 5px; /* Bordes redondeados */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transición para suavizar el efecto */
+        }
+
+        .list-container li:hover {
+            box-shadow: 0 4px 8px rgba(0, 128, 0, 0.5); /* Sombra verde más fuerte al pasar el cursor */
+            transform: translateY(-5px); /* Elevar ligeramente al pasar el cursor */
+            cursor: pointer; /* Cambiar el cursor al pasar por encima */
+        }
+    </style>
+</head>
+<body>
+    <div class="mb-6">
+        <p class="text-base font-medium"></p>
+        <ul class="list-container">
+            <li>Sustentabilidad</li>
+            <li>Asuntos Legales</li>
+            <li>Asuntos Institucionales</li>
+            <li>Operaciones</li>
+            <li>Logística y Mantenimiento</li>
+            <li>HyS (Higiene y Seguridad)</li>
+            <li>RRHH (Recursos Humanos)</li>
+            <li>Comunicación y Prensa</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+    </div>
+
+                    <label for="directorio" class="font-medium">Datos del Directorio , gerentes,  contactos de las siguientes àreas</label>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                        <input type="text" id="nombreDirectorio" placeholder="Nombre y Apellido" class="border border-gray-300 rounded-lg p-2">
+                        <input type="text" id="cargoDirectorio" placeholder="Cargo/Área" class="border border-gray-300 rounded-lg p-2">
+                        <input type="email" id="emailDirectorio" placeholder="E-mail" class="border border-gray-300 rounded-lg p-2">
+                        <input type="tel" id="telDirectorio" placeholder="Tel/Cel" class="border border-gray-300 rounded-lg p-2">
+                    </div>
+                    <button id="agregarFilaBtn" type="button" class="mt-4 bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600">Agregar Fila</button>
+                </div>
+
+                <table class="w-full mt-6 table-auto border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 p-2">Nombre y Apellido</th>
+                            <th class="border border-gray-300 p-2">Cargo/Área</th>
+                            <th class="border border-gray-300 p-2">E-mail</th>
+                            <th class="border border-gray-300 p-2">Tel/Cel</th>
+                        </tr>
+                    </thead>
+                    <tbody id="directorioTableBody">
+                        <!-- Aquí irán las filas agregadas -->
+                    </tbody>
+                </table>
+
+                <div class="mt-6 flex justify-between">
+                    <button type="button" class="px-4 py-2 bg-gray-400 text-white rounded" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep()">Siguiente</button>
+                </div>
+            </fieldset>
+
+            <!-- Paso 5: Resumen de datos -->
+            <fieldset id="resumen" class="form-step hidden">
+                <legend class="text-xl font-semibold mb-4">Resumen de datos</legend>
+                <table class="min-w-full table-auto border-collapse border border-gray-400">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2">Campo</th>
+                            <th class="border border-gray-300 px-4 py-2">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaResumen">
+                        <!-- Los datos ingresados por el usuario se llenarán aquí -->
+                    </tbody>
+                </table>
+                <div class="mt-6 flex justify-between">
+                    <button type="button" class="px-4 py-2 bg-gray-400 text-white rounded"
+                        onclick="prevStep()">Anterior</button>
+                    <button type="button" class="px-4 py-2 bg-green-500 text-white rounded"
+                        onclick="confirmarEnvio()">Confirmar y Enviar</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>  
+
+
+    <!-- Scripts al final del body -->
+    <script>
+        // Funciones de navegación entre pasos
+        let currentStep = 0;
+        const steps = document.querySelectorAll('.form-step');
+        let directorioData = [];
+
+        function showStep(stepIndex) {
+            steps.forEach((step, index) => {
+                step.classList.toggle('hidden', index !== stepIndex);
+            });
+        }
+
+               function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        // Función para mostrar el resumen
+        function mostrarResumen() {
+    const tablaResumen = document.getElementById('tablaResumen');
+    tablaResumen.innerHTML = ''; // Limpiar la tabla antes de rellenar
+
+    // Obtener todos los inputs y selects, incluidos los ocultos
+    const inputs = document.querySelectorAll('input, select');
+
+    // Iterar sobre todos los inputs y selects para agregar al resumen
+    inputs.forEach(input => {
+        // Ignorar campos de tipo 'file' ya que no queremos mostrar archivos subidos
+        if (input.type !== 'file') {
+            const label = input.closest('div') ? input.closest('div').querySelector('label') : null;
+            const nombreCampo = label ? label.innerText : 'Campo sin etiqueta';
+            const valorCampo = input.value ? input.value : 'No completado';
+
+            // Crear fila en la tabla
+            const fila = `
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">${nombreCampo}</td>
+                    <td class="border border-gray-300 px-4 py-2">${valorCampo}</td>
+                </tr>`;
+            
+            tablaResumen.innerHTML += fila;
+        }
+    });
+
+    // Añadir los datos del directorio (si existen)
+    directorioData.forEach((row) => {
+        const filaDirectorio = `
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">${row.nombre}</td>
+                <td class="border border-gray-300 px-4 py-2">${row.cargo}</td>
+                <td class="border border-gray-300 px-4 py-2">${row.email}</td>
+                <td class="border border-gray-300 px-4 py-2">${row.telefono}</td>
+            </tr>`;
+        tablaResumen.innerHTML += filaDirectorio;
+    });
+}
+           // Añadir los datos del directorio al resumen
+            directorioData.forEach((row) => {
+                const filaDirectorio = `
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2">${row.nombre}</td>
+                                    <td class="border border-gray-300 px-4 py-2">${row.cargo}</td>
+                                    <td class="border border-gray-300 px-4 py-2">${row.email}</td>
+                                    <td class="border border-gray-300 px-4 py-2">${row.telefono}</td>
+                                </tr>`;
+                tablaResumen.innerHTML += filaDirectorio;
+            });
+        
+
+        function confirmarEnvio() {
+            if (confirm('¿Estás seguro de que deseas enviar los datos?')) {
+                document.getElementById('formulario').submit();
+            }
+        }
+
+        // Mostrar el primer paso al cargar la página
+        showStep(currentStep);
+
+        // Función para agregar filas a la tabla de directorio
+        document.getElementById('agregarFilaBtn').addEventListener('click', function () {
+            const nombre = document.getElementById('nombreDirectorio').value;
+            const cargo = document.getElementById('cargoDirectorio').value;
+            const email = document.getElementById('emailDirectorio').value;
+            const telefono = document.getElementById('telDirectorio').value;
+
+            if (nombre && cargo && email && telefono) {
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.innerHTML = `
+                                <td class="border border-gray-300 p-2">${nombre}</td>
+                                <td class="border border-gray-300 p-2">${cargo}</td>
+                                <td class="border border-gray-300 p-2">${email}</td>
+                                <td class="border border-gray-300 p-2">${telefono}</td>
+                            `;
+                document.getElementById('directorioTableBody').appendChild(nuevaFila);
+
+                // Almacenar los datos del directorio para enviarlos más tarde
+                directorioData.push({ nombre, cargo, email, telefono });
+
+                // Limpiar los campos
+                document.getElementById('nombreDirectorio').value = '';
+                document.getElementById('cargoDirectorio').value = '';
+                document.getElementById('emailDirectorio').value = '';
+                document.getElementById('telDirectorio').value = '';
+            } else {
+                alert('Por favor, complete todos los campos antes de agregar una fila.');
+            }
+        });
+
+        // Funciones para el modal del Estatuto
+        function openModalEstatuto() {
+            document.getElementById('modalEstatuto').style.display = 'flex';
+        }
+
+        function closeModalEstatuto() {
+            if (acceptTerms.checked) {
+                document.getElementById('modalEstatuto').style.display = 'none';
+            } else {
+                alert('Debe aceptar los términos y condiciones para continuar.');
+            }
+        }
+
+        // Validación de scroll en el Estatuto
+        const termsBox = document.getElementById('terms');
+        const termsProgressBar = document.getElementById('terms-progress-bar');
+        const acceptTerms = document.getElementById('accept-terms');
+        const continueBtn = document.getElementById('continue-btn');
+
+        termsBox.addEventListener('scroll', function () {
+            const scrollTop = termsBox.scrollTop;
+            const scrollHeight = termsBox.scrollHeight - termsBox.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            termsProgressBar.style.width = scrollPercentage + '%';
+
+            if (scrollTop >= scrollHeight) {
+                acceptTerms.disabled = false;
+            }
+        });
+
+        acceptTerms.addEventListener('change', function () {
+            continueBtn.disabled = !acceptTerms.checked;
+        });
+
+        // Inicializa el temporizador
+        let startTime = Date.now();
+        const timerElement = document.getElementById("timer");
+        setInterval(function () {
+            let elapsed = Date.now() - startTime;
+            let minutes = Math.floor(elapsed / 60000);
+            let seconds = Math.floor((elapsed % 60000) / 1000);
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+
+        // Funciones para avanzar entre los pasos y barra de progreso
+        function updateProgressBar() {
+    const totalSteps = steps.length; // Usar la longitud de los pasos para obtener el total
+    const progress = Math.min(((currentStep + 1) / totalSteps) * 100, 100); // Math.min para evitar superar el 100%
+    console.log("Progreso:", progress + "%"); // Revisar el valor de progreso
+    document.getElementById('form-progress-bar').style.width = `${progress}%`; // Cambiar el ancho de la barra
+}
+        function nextStep() {
+            const currentForm = steps[currentStep].querySelectorAll('input[required], select[required]');
+            const isValid = Array.from(currentForm).every(input => input.reportValidity());
+            if (isValid && currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+                updateProgressBar();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgressBar();
+            }
+        }
+
+        // Mostrar el primer paso al cargar la página
+        showStep(currentStep);
+    </script>
+</div>
+</fieldset>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const termsDiv = document.getElementById('terms');
+        const acceptTermsCheckbox = document.getElementById('accept-terms');
+        const continueBtn = document.getElementById('continue-btn');
+
+        // Revisamos el scroll en el div que contiene los términos
+        termsDiv.addEventListener('scroll', function () {
+            if (termsDiv.scrollTop + termsDiv.clientHeight >= termsDiv.scrollHeight - 10) {
+                // Habilitar el checkbox cuando el usuario llegue al final del scroll
+                acceptTermsCheckbox.disabled = false;
+            }
+        });
+
+        // Revisamos si el checkbox está marcado para habilitar el botón continuar
+        acceptTermsCheckbox.addEventListener('change', function () {
+            if (acceptTermsCheckbox.checked) {
+                continueBtn.disabled = false;
+            } else {
+                continueBtn.disabled = true;
+            }
+        });
+    });
+
+  function generarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    // Añadir el logo y título principal
+    const logoImg = new Image();
+    logoImg.src = 'https://via.placeholder.com/100'; // Reemplazar con el logo correspondiente
+    doc.addImage(logoImg, 'PNG', 10, 10, 30, 30);
+    doc.setFontSize(22);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('FORMULARIO ALTA CLIENTE', 60, 20);
+
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Datos de la empresa', 10, 50);
+
+    // Extraer los datos del formulario
+    const inputs = document.querySelectorAll('input, select');
+    let formData = [];
+
+    inputs.forEach(input => {
+      if (input.type !== 'file') {
+        const label = input.previousElementSibling ? input.previousElementSibling.innerText : 'Sin título';
+        const valor = input.value ? input.value : 'No completado';
+        formData.push([label, valor]);
+      }
+    });
+
+    // Organizar los datos por secciones
+    const datosEmpresa = formData.filter(data => [
+      'Nombre del solicitante *',
+      'Apellido del solicitante *',
+      'DNI (solo números) *',
+      'E-mail del solicitante *',
+      'Nombre de fantasía de la empresa *',
+      'Razón social para facturación *',
+      'CUIT *',
+      'Rubro o actividad principal *',
+      'Facturación estimada último año *',
+      'Empleados en relación de dependencia *',
+      'Dirección *',
+      'Código postal *',
+      'Localidad *',
+      'Provincia *',
+      'Número de teléfono *',
+      'Condición frente al IVA *'
+      
+    ].includes(data[0]));
+
+     // Añadir datos de la empresa en una tabla
+    doc.autoTable({
+      head: [['Campo', 'Valor']],
+      body: datosEmpresa,
+      startY: 55,
+      theme: 'grid',
+      styles: { fontSize: 11, cellPadding: 5, font: 'helvetica' },
+      headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255], fontSize: 13, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      columnStyles: {
+        0: { cellWidth: 60, fontStyle: 'bold' },
+        1: { cellWidth: 120 }
+      },
+      margin: { top: 55, left: 10, right: 10 },
+      tableLineColor: [0, 0, 0],
+      tableLineWidth: 0.1,
+    });
+
+    // Guardar el PDF
+    doc.save('Formulario_Alta_Cliente.pdf');
+  }
+
+  function enviarEmail() {
+    const formData = new FormData(document.querySelector('form'));
+    const emailData = {
+      to: ['claudio.arias@caem.com.ar'],
+      subject: 'Nuevo formulario de alta de cliente',
+      body: 'Se adjunta el formulario de alta de cliente junto con los documentos adjuntos proporcionados.',
+      attachments: []
+    };
+
+    // Añadir archivos adjuntos
+    formData.forEach((value, key) => {
+      if (value instanceof File) {
+        emailData.attachments.push({
+          name: value.name,
+          data: value
+        });
+      }
+    });
+
+    // Simulación del envío de email (debes implementar con tu API o servidor SMTP)
+    console.log('Enviando email con los siguientes datos:', emailData);
+    alert('Formulario enviado correctamente');
+  }
+</script>
+<!-- Incluye jsPDF y autoTable al final de tu archivo HTML -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+<script>
+window.onload = function () {
+const submitBtn = document.createElement('button');
+submitBtn.textContent = 'Enviar y Generar PDF';
+submitBtn.className = 'mt-6 px-4 py-2 bg-blue-500 text-white rounded';
+submitBtn.addEventListener('click', enviarFormulario);
+document.querySelector('.max-w-6xl').appendChild(submitBtn);
+};
+
+function enviarFormulario(event) {
+event.preventDefault();
+generarPDF();
+enviarEmail();
+}
+<script src="https://cdn.emailjs.com/dist/email.min.js" /></script>
+
+
+<script>
+    (function() {
+        emailjs.init("service_men33xc"); // Reemplazá "TU_USER_ID" por tu ID de usuario de EmailJS
+    })();
+
+    function enviarFormulario() {
+    // Generar el PDF
+    const doc = generarPDF();
+    const pdfBlob = doc.output('blob'); // Obtener el PDF como un Blob
+
+    // Crear un nuevo FormData
+    const formData = new FormData();
+    formData.append("service_id", "service_men33xc"); // Reemplazá "TU_SERVICE_ID" por el ID de tu servicio de EmailJS
+    formData.append("template_id", "TU_TEMPLATE_ID"); // Reemplazá "TU_TEMPLATE_ID" por el ID de tu plantilla de EmailJS
+    formData.append("user_id", "3D4KBPRO5nr-egf34"); // Reemplazá "TU_USER_ID" por tu ID de usuario de EmailJS
+
+    // Añadir archivos adjuntos
+    const archivosAdjuntos = document.querySelectorAll('input[type="file"]');
+    archivosAdjuntos.forEach(archivoInput => {
+        if (archivoInput.files.length > 0) {
+            formData.append(archivoInput.name, archivoInput.files[0]);
+        }
+    });
+}
+    // Añadir el PDF generado
+    formData.append("formulario_pdf", pdfBlob, "Formulario_Alta_Cliente.pdf");
+
+    // Enviar con EmailJS
+    emailjs.sendForm("service_men33xc", "TU_TEMPLATE_ID", formData)
+        .then(response => {
+            alert("Formulario enviado correctamente");
+        })
+        .catch(error => {
+            console.error("Error al enviar el formulario: ", error);
+            alert("Hubo un error al enviar el formulario, intentá nuevamente.");
+        });
+
+
+// Botón para enviar el formulario
+document.querySelector("#confirmarEnvioBtn").addEventListener('click', function(event) {
+    event.preventDefault(); // Prevenir el envío tradicional
+    enviarFormulario();
+});
+</script>
+</script>
+</body>
+
+<!-- Scripts al final del body -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+    (function() {
+        emailjs.init("3D4KBPRO5nr-egf34"); // Reemplazá "TU_USER_ID" por tu ID de usuario de EmailJS
+    })();
+
+    // Aquí va todo el JavaScript necesario para la funcionalidad del formulario, como avanzar entre pasos, generar PDFs y enviar emails.
+</script>
+</body>
+<script src="scripts.js"></script>
+
+</html>
+
+</html>
